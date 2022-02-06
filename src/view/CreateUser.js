@@ -7,7 +7,6 @@ import UserEditor from "./UserEditor";
 export default function CreateUser() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const errors = useSelector((state) => state.users.errors);
   const isFetching = useSelector((state) => state.status === "create_loading");
 
   return (
@@ -18,7 +17,6 @@ export default function CreateUser() {
       }}
       editedUser={makeUser({})}
       isFetching={isFetching}
-      errors={errors}
       requiredOnly
     />
   );

@@ -11,19 +11,32 @@ export default function UserEditor({
   onSubmit,
   editedUser,
   isLoading,
-  errors,
   requiredOnly = false,
 }) {
   const navigate = useNavigate();
-
   const [user, setUser] = useState(editedUser);
-  const updateField = (key, value) => setUser((u) => ({ ...u, [key]: value }));
+  const handleChange = (key) => (event) => {
+    setUser((u) => ({ ...u, [key]: event.target.value }));
+  };
+
+  const handleAddressChange = (key) => (event) => {
+    console.log(key, event);
+    setUser((u) => ({
+      ...u,
+      address: { ...u.address, [key]: event.target.value },
+    }));
+  };
+
+  const handleCompanyChange = (key) => (event) => {
+    setUser((u) => ({
+      ...u,
+      company: { ...u.company, [key]: event.target.value },
+    }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(user);
-  };
-  const handleChange = (key) => (event) => {
-    updateField(key, event.target.value);
   };
 
   const cancel = () => navigate("/");
@@ -36,25 +49,21 @@ export default function UserEditor({
       <Stack spacing={2}>
         <TextField
           required
-          error={!!errors["name"]}
-          helperText={errors["name"]}
           label="Name"
           type="text"
           id="name"
           name="name"
-          value={user.name || ""}
+          value={user?.name || ""}
           onChange={handleChange("name")}
         />
 
         <TextField
           required
-          error={!!errors["email"]}
-          helperText={errors["email"]}
           label="Email"
           type="email"
           id="email"
           name="email"
-          value={user.email || ""}
+          value={user?.email || ""}
           onChange={handleChange("email")}
         />
         {!requiredOnly && (
@@ -64,7 +73,7 @@ export default function UserEditor({
               type="text"
               id="username"
               name="username"
-              value={user.username || ""}
+              value={user?.username || ""}
               onChange={handleChange("username")}
             />
             <TextField
@@ -72,7 +81,7 @@ export default function UserEditor({
               type="tel"
               id="phone"
               name="phone"
-              value={user.phone || ""}
+              value={user?.phone || ""}
               onChange={handleChange("phone")}
             />
 
@@ -81,7 +90,7 @@ export default function UserEditor({
               type="text"
               id="website"
               name="website"
-              value={user.website || ""}
+              value={user?.website || ""}
               onChange={handleChange("website")}
             />
 
@@ -93,8 +102,8 @@ export default function UserEditor({
                   type="text"
                   id="street"
                   name="street"
-                  value={user.address?.street || ""}
-                  onChange={handleChange("street")}
+                  value={user?.address?.street || ""}
+                  onChange={handleAddressChange("street")}
                 />
 
                 <TextField
@@ -102,8 +111,8 @@ export default function UserEditor({
                   type="text"
                   id="suite"
                   name="suite"
-                  value={user.address?.suite || ""}
-                  onChange={handleChange("suite")}
+                  value={user?.address?.suite || ""}
+                  onChange={handleAddressChange("suite")}
                 />
 
                 <TextField
@@ -111,8 +120,8 @@ export default function UserEditor({
                   type="text"
                   id="city"
                   name="city"
-                  value={user.address?.city || ""}
-                  onChange={handleChange("city")}
+                  value={user?.address?.city || ""}
+                  onChange={handleAddressChange("city")}
                 />
 
                 <TextField
@@ -120,8 +129,8 @@ export default function UserEditor({
                   type="text"
                   id="zipcode"
                   name="zipcode"
-                  value={user.address?.zipcode || ""}
-                  onChange={handleChange("zipcode")}
+                  value={user?.address?.zipcode || ""}
+                  onChange={handleAddressChange("zipcode")}
                 />
               </Stack>
             </FormControl>
@@ -134,16 +143,16 @@ export default function UserEditor({
                   type="text"
                   id="companyName"
                   name="companyName"
-                  value={user.company?.name || ""}
-                  onChange={handleChange("name")}
+                  value={user?.company?.name || ""}
+                  onChange={handleCompanyChange("name")}
                 />
                 <TextField
                   label="Catch phrase"
                   type="text"
                   id="catchPhrase"
                   name="catchPhrase"
-                  value={user.company?.catchPhrase || ""}
-                  onChange={handleChange("catchPhrase")}
+                  value={user?.company?.catchPhrase || ""}
+                  onChange={handleCompanyChange("catchPhrase")}
                 />
 
                 <TextField
@@ -151,8 +160,8 @@ export default function UserEditor({
                   type="text"
                   id="bs"
                   name="bs"
-                  value={user.company?.bs || ""}
-                  onChange={handleChange("bs")}
+                  value={user?.company?.bs || ""}
+                  onChange={handleCompanyChange("bs")}
                 />
               </Stack>
             </FormControl>

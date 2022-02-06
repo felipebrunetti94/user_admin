@@ -9,14 +9,14 @@ export default function EditUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => selectUserById(state, userId));
-  const errors = useSelector((state) => state.users.errors);
   const isFetching = useSelector((state) => state.status === "edit_loading");
 
   useEffect(() => {
+    console.log(currentUser, userId);
     if (!currentUser) {
       navigate("/");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, navigate, userId]);
 
   return (
     <UserEditor
@@ -27,7 +27,6 @@ export default function EditUser() {
       editedUser={currentUser}
       cancel={() => navigate("/")}
       isFetching={isFetching}
-      errors={errors}
     />
   );
 }

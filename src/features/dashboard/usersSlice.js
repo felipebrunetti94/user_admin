@@ -37,7 +37,6 @@ const usersAdapter = createEntityAdapter();
 const initialState = usersAdapter.getInitialState({
   status: "idle",
   current: {},
-  errors: {},
 });
 
 const usersSlice = createSlice({
@@ -46,20 +45,17 @@ const usersSlice = createSlice({
   reducers: {
     cancel(state, _) {
       state.status = "idle";
-      state.current = {};
     },
 
     create(state, _) {
       state.status = "create";
     },
 
-    edit(state, action) {
-      state.current = action.payload;
+    edit(state) {
       state.status = "edit";
     },
 
-    remove(state, action) {
-      state.current = action.payload;
+    remove(state) {
       state.status = "remove";
     },
 
@@ -78,7 +74,6 @@ const usersSlice = createSlice({
         state.status = "idle";
       })
       .addCase(fetchUsers.rejected, (state, action) => {
-        state.errors = action.payload;
         state.status = "idle";
       })
       .addCase(createUser.pending, (state, _) => {
@@ -86,7 +81,6 @@ const usersSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action) => {
         usersAdapter.addOne(state, action.payload);
-        state.current = {};
         state.status = "idle";
       })
       .addCase(editUser.pending, (state, _) => {
@@ -95,7 +89,6 @@ const usersSlice = createSlice({
       .addCase(editUser.fulfilled, (state, action) => {
         usersAdapter.setOne(state, action.payload);
         state.status = "idle";
-        state.current = {};
       })
       .addCase(deleteUser.pending, (state, _) => {
         state.status = "remove_loading";
@@ -103,7 +96,6 @@ const usersSlice = createSlice({
       .addCase(deleteUser.fulfilled, (state, action) => {
         usersAdapter.removeOne(state, action.payload);
         state.status = "idle";
-        state.current = {};
       });
   },
 });
