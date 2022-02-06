@@ -20,7 +20,6 @@ export default function UserEditor({
   };
 
   const handleAddressChange = (key) => (event) => {
-    console.log(key, event);
     setUser((u) => ({
       ...u,
       address: { ...u.address, [key]: event.target.value },

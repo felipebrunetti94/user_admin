@@ -1,7 +1,6 @@
 const BASE_URL =
   "https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data";
-
-export const makeUser = (userInfo) => ({
+export const initialUser = {
   name: "",
   username: "",
   email: "",
@@ -22,8 +21,8 @@ export const makeUser = (userInfo) => ({
     catchPhrase: "",
     bs: "",
   },
-  ...userInfo,
-});
+};
+export const makeUser = (userInfo) => ({ ...initialUser, ...userInfo });
 
 const userApi = {
   get() {
@@ -47,7 +46,7 @@ const userApi = {
       },
     })
       .then((response) => response.json())
-      .then(makeUser);
+      .then(() => makeUser(editedUser));
   },
 
   create(userInfo) {

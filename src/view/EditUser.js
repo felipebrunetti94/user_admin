@@ -12,7 +12,6 @@ export default function EditUser() {
   const isFetching = useSelector((state) => state.status === "edit_loading");
 
   useEffect(() => {
-    console.log(currentUser, userId);
     if (!currentUser) {
       navigate("/");
     }
