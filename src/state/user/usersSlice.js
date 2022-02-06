@@ -74,7 +74,7 @@ const usersSlice = createSlice({
         state.status = "idle";
       })
       .addCase(fetchUsers.rejected, (state, action) => {
-        state.status = "idle";
+        state.status = "error";
       })
       .addCase(createUser.pending, (state, _) => {
         state.status = "create_loading";
@@ -83,6 +83,9 @@ const usersSlice = createSlice({
         usersAdapter.addOne(state, action.payload);
         state.status = "idle";
       })
+      .addCase(createUser.rejected, (state, _) => {
+        state.status = "error";
+      })
       .addCase(editUser.pending, (state, _) => {
         state.status = "edit_loading";
       })
@@ -90,12 +93,18 @@ const usersSlice = createSlice({
         usersAdapter.setOne(state, action.payload);
         state.status = "idle";
       })
+      .addCase(editUser.rejected, (state, _) => {
+        state.status = "error";
+      })
       .addCase(deleteUser.pending, (state, _) => {
         state.status = "remove_loading";
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         usersAdapter.removeOne(state, action.payload);
         state.status = "idle";
+      })
+      .addCase(deleteUser.rejected, (state, _) => {
+        state.status = "error";
       });
   },
 });
