@@ -40,18 +40,19 @@ function getComparator(order, orderBy) {
 }
 
 export default function UserTable() {
+  const navigate = useNavigate();
+  const [asc, setAsc] = useState(false);
+  const dispatch = useDispatch();
   const status = useSelector((state) => state.users.status);
+  const user = useSelector((state) => state.users.current);
+  const users = useSelector((state) => selectUsers(state));
+
   const showDelete = status === "remove" || status === "remove_loading";
   const isLoading = status === "loading";
-  const dispatch = useDispatch();
-  const users = useSelector((state) => selectUsers(state));
   const isEmpty = users.length === 0;
   const showTable = !isEmpty && !isLoading;
   const showEmptyMessage = isEmpty && !isLoading;
-  const [asc, setAsc] = useState(false);
   const order = asc ? "asc" : "desc";
-  const user = useSelector((state) => state.users.current);
-  const navigate = useNavigate();
 
   return (
     <>

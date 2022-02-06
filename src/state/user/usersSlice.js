@@ -55,13 +55,9 @@ const usersSlice = createSlice({
       state.status = "edit";
     },
 
-    remove(state) {
+    remove(state, action) {
+      state.current = action.payload;
       state.status = "remove";
-    },
-
-    updateField(state, action) {
-      const { fieldname, value } = action.payload;
-      state.current[fieldname] = value;
     },
   },
   extraReducers: (builder) => {
