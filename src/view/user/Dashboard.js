@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 
-import { fetchUsers } from "../features/dashboard/usersSlice";
+import { fetchUsers } from "../../state/user/usersSlice";
 
 export default function Dashboard() {
   const dispatch = useDispatch();

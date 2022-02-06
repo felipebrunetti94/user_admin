@@ -1,32 +1,19 @@
+import { makeUser } from "./makeUser";
+
 const BASE_URL =
   "https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data";
-export const initialUser = {
-  name: "",
-  username: "",
-  email: "",
-  address: {
-    street: "",
-    suite: "",
-    city: "",
-    zipcode: "",
-    geo: {
-      lat: "",
-      lng: "",
-    },
-  },
-  phone: "",
-  website: "",
-  company: {
-    name: "",
-    catchPhrase: "",
-    bs: "",
-  },
-};
-export const makeUser = (userInfo) => ({ ...initialUser, ...userInfo });
+
+function errorHandler(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
 
 const userApi = {
   get() {
     return fetch(BASE_URL)
+      .then(errorHandler)
       .then((response) => response.json())
       .then((users) => users.map(makeUser));
   },
@@ -34,7 +21,7 @@ const userApi = {
   delete(user) {
     return fetch(`${BASE_URL}/${user.id}`, {
       method: "DELETE",
-    });
+    }).then(errorHandler);
   },
 
   edit(editedUser) {
@@ -45,6 +32,7 @@ const userApi = {
         "Content-type": "application/json; charset=UTF-8",
       },
     })
+      .then(errorHandler)
       .then((response) => response.json())
       .then(() => makeUser(editedUser));
   },
@@ -57,6 +45,7 @@ const userApi = {
         "Content-type": "application/json; charset=UTF-8",
       },
     })
+      .then(errorHandler)
       .then((response) => response.json())
       .then((id) => makeUser({ ...userInfo, ...id }));
   },

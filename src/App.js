@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import CreateUser from "./view/CreateUser";
-import Dashboard from "./view/Dashboard";
-import EditUser from "./view/EditUser";
-import UserTable from "./view/UserTable";
+import CreateUser from "./view/user/CreateUser";
+import Dashboard from "./view/user/Dashboard";
+import EditUser from "./view/user/EditUser";
+import UserTable from "./view/user/UserTable";
 
 function App() {
   return (

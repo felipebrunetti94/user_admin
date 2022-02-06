@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import usersApi from "./usersApi";
+import usersApi from "../../infra/user/usersApi";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const users = await usersApi.get();

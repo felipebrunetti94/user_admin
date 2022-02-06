@@ -20,7 +20,7 @@ import {
   remove,
   cancel,
   deleteUser,
-} from "../features/dashboard/usersSlice";
+} from "../../state/user/usersSlice";
 
 import DeletePopup from "./DeletePopup";
 

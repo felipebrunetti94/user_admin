@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { editUser, selectUserById } from "../features/dashboard/usersSlice";
+import { editUser, selectUserById } from "../../state/user/usersSlice";
 import UserEditor from "./UserEditor";
 
 export default function EditUser() {

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { makeUser } from "../features/dashboard/usersApi";
-import { createUser } from "../features/dashboard/usersSlice";
+import { makeUser } from "../../infra/user/makeUser";
+import { createUser } from "../../state/user/usersSlice";
 import UserEditor from "./UserEditor";
 
 export default function CreateUser() {
