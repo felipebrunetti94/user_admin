@@ -1,10 +1,10 @@
-export default function EditorUser({ updateField, onSubmit, user, cancel }) {
+export default function EditorUser({ updateField, onSubmit, user, cancel, isFetching }) {
   const handleSubmit = (event) => {
     event.preventDefault()
     onSubmit()
   }
   const handleChange = (fieldname) => (event) => {
-    updateField(fieldname, event.target.value)
+    updateField({ fieldname, value: event.target.value })
   }
   return (
     <div>

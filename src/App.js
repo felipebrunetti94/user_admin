@@ -1,15 +1,10 @@
 import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
+import Dashboard from './view/Dashboard';
 
 function App() {
-
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<></>} />
-        <Route path="/edit/:id" element={<></>} />
-        <Route path="/add" element={<></>} />
-      </Routes>
+      <Dashboard />
     </div>
   );
 }

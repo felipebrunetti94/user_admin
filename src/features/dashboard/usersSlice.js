@@ -40,17 +40,25 @@ const usersSlice = createSlice({
       state.status = 'idle'
       state.current = null
     },
+
     create(state, _) {
       state.status = 'create'
     },
+
     edit(state, action) {
       state.current = action.payload
       state.status = 'edit'
     },
+
     remove(state, action) {
       state.current = action.payload
       state.status = 'remove'
     },
+
+    updateField(state, action) {
+      const { fieldname, value } = action.payload
+      state.current[fieldname] = value
+    }
   },
   extraReducers: builder => {
     builder
@@ -58,12 +66,12 @@ const usersSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        usersAdapter.setAll(action.payload)
+        usersAdapter.setAll(state, action.payload)
         state.status = 'idle'
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.errors = action.payload
-        state.fetching = false
+        state.status = 'idle'
       })
       .addCase(createUser.pending, (state, _) => {
         state.status = 'create_loading'
@@ -91,7 +99,7 @@ const usersSlice = createSlice({
   }
 })
 
-export const { remove, edit, create, cancel } = usersSlice.actions
+export const { remove, edit, create, cancel, updateField } = usersSlice.actions
 
 export default usersSlice.reducer
 
