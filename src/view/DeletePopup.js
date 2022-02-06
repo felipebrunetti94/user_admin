@@ -1,9 +1,7 @@
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
-import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -16,8 +14,13 @@ const style = {
   p: 2,
 };
 
-export default function DeletePopup({ cancel, removeUser, isOpen, isLoading }) {
-  const user = useSelector((state) => state.users.current);
+export default function DeletePopup({
+  cancel,
+  removeUser,
+  isOpen,
+  isLoading,
+  user,
+}) {
   return (
     <Modal
       open={isOpen}

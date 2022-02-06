@@ -1,7 +1,7 @@
 const BASE_URL =
   "https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data";
 
-const createUser = (userInfo) => ({
+export const makeUser = (userInfo) => ({
   name: "",
   username: "",
   email: "",
@@ -29,7 +29,7 @@ const userApi = {
   get() {
     return fetch(BASE_URL)
       .then((response) => response.json())
-      .then((users) => users.map(createUser));
+      .then((users) => users.map(makeUser));
   },
 
   delete(user) {
@@ -47,7 +47,7 @@ const userApi = {
       },
     })
       .then((response) => response.json())
-      .then(createUser);
+      .then(makeUser);
   },
 
   create(userInfo) {
@@ -59,7 +59,7 @@ const userApi = {
       },
     })
       .then((response) => response.json())
-      .then((id) => createUser({ ...userInfo, ...id }));
+      .then((id) => makeUser({ ...userInfo, ...id }));
   },
 };
 

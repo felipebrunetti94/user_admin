@@ -1,26 +1,32 @@
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { useNavigate } from "react-router-dom";
 
 export default function UserEditor({
-  updateField,
   onSubmit,
-  user,
-  cancel,
+  editedUser,
   isLoading,
   errors,
   requiredOnly = false,
 }) {
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState(editedUser);
+  const updateField = (key, value) => setUser((u) => ({ ...u, [key]: value }));
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit();
+    onSubmit(user);
   };
-  const handleChange = (fieldname) => (event) => {
-    updateField({ fieldname, value: event.target.value });
+  const handleChange = (key) => (event) => {
+    updateField(key, event.target.value);
   };
+
+  const cancel = () => navigate("/");
 
   return (
     <Stack spacing={3} component="form" sx={{ p: 2 }} onSubmit={handleSubmit}>
@@ -87,7 +93,7 @@ export default function UserEditor({
                   type="text"
                   id="street"
                   name="street"
-                  value={user.address.street || ""}
+                  value={user.address?.street || ""}
                   onChange={handleChange("street")}
                 />
 
@@ -96,7 +102,7 @@ export default function UserEditor({
                   type="text"
                   id="suite"
                   name="suite"
-                  value={user.address.suite || ""}
+                  value={user.address?.suite || ""}
                   onChange={handleChange("suite")}
                 />
 
@@ -105,7 +111,7 @@ export default function UserEditor({
                   type="text"
                   id="city"
                   name="city"
-                  value={user.address.city || ""}
+                  value={user.address?.city || ""}
                   onChange={handleChange("city")}
                 />
 
@@ -114,7 +120,7 @@ export default function UserEditor({
                   type="text"
                   id="zipcode"
                   name="zipcode"
-                  value={user.address.zipcode || ""}
+                  value={user.address?.zipcode || ""}
                   onChange={handleChange("zipcode")}
                 />
               </Stack>
@@ -128,7 +134,7 @@ export default function UserEditor({
                   type="text"
                   id="companyName"
                   name="companyName"
-                  value={user.company.name || ""}
+                  value={user.company?.name || ""}
                   onChange={handleChange("name")}
                 />
                 <TextField
@@ -136,7 +142,7 @@ export default function UserEditor({
                   type="text"
                   id="catchPhrase"
                   name="catchPhrase"
-                  value={user.company.catchPhrase || ""}
+                  value={user.company?.catchPhrase || ""}
                   onChange={handleChange("catchPhrase")}
                 />
 
@@ -145,7 +151,7 @@ export default function UserEditor({
                   type="text"
                   id="bs"
                   name="bs"
-                  value={user.company.bs || ""}
+                  value={user.company?.bs || ""}
                   onChange={handleChange("bs")}
                 />
               </Stack>

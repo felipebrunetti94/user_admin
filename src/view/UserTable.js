@@ -12,6 +12,17 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import {
+  selectUsers,
+  remove,
+  cancel,
+  deleteUser,
+} from "../features/dashboard/usersSlice";
+
+import DeletePopup from "./DeletePopup";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -28,94 +39,114 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export default function UserTable({ create, edit, remove, users, isLoading }) {
+export default function UserTable() {
+  const status = useSelector((state) => state.users.status);
+  const showDelete = status === "remove" || status === "remove_loading";
+  const isLoading = status === "loading";
+  const dispatch = useDispatch();
+  const users = useSelector((state) => selectUsers(state));
   const isEmpty = users.length === 0;
   const showTable = !isEmpty && !isLoading;
   const showEmptyMessage = isEmpty && !isLoading;
   const [asc, setAsc] = useState(false);
   const order = asc ? "asc" : "desc";
+  const user = useSelector((state) => state.users.current);
+  const navigate = useNavigate();
 
   return (
-    <Stack spacing={4} sx={{ p: 2 }}>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h4" component="h2">
-          User list
-        </Typography>
-        <Button
-          variant="contained"
-          size="small"
-          name="add"
-          onClick={create}
-          sx={{ px: 5 }}
-        >
-          Add new
-        </Button>
-      </Stack>
-      {showEmptyMessage && <Alert severity="info">No user found!</Alert>}
-      {isLoading && <Skeleton variant="rectangular" />}
-      {showTable && (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">
-                  <TableSortLabel
-                    active
-                    direction={order}
-                    onClick={() => setAsc(!asc)}
-                  >
-                    Username
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell align="center">Email</TableCell>
-                <TableCell align="center">City</TableCell>
-                <TableCell align="center">Edit</TableCell>
-                <TableCell align="center">Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.sort(getComparator(order, "username")).map((user) => (
-                <TableRow
-                  key={user.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {user.id}
-                  </TableCell>
-                  <TableCell align="center">{user.name}</TableCell>
-                  <TableCell align="center">{user.username}</TableCell>
-                  <TableCell align="center">{user.email}</TableCell>
-                  <TableCell align="center">{user.address.city}</TableCell>
+    <>
+      <Stack spacing={4} sx={{ p: 2 }}>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="h4" component="h2">
+            User list
+          </Typography>
+          <Button
+            variant="contained"
+            size="small"
+            name="add"
+            onClick={() => navigate("edit")}
+            sx={{ px: 5 }}
+          >
+            Add new
+          </Button>
+        </Stack>
+        {showEmptyMessage && <Alert severity="info">No user found!</Alert>}
+        {isLoading && <Skeleton variant="rectangular" />}
+        {showTable && (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Id</TableCell>
+                  <TableCell align="center">Name</TableCell>
                   <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="warning"
-                      name="edit"
-                      onClick={() => edit(user)}
+                    <TableSortLabel
+                      active
+                      direction={order}
+                      onClick={() => setAsc(!asc)}
                     >
-                      edit
-                    </Button>
+                      Username
+                    </TableSortLabel>
                   </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="error"
-                      name="delete"
-                      onClick={() => remove(user)}
-                    >
-                      delete
-                    </Button>
-                  </TableCell>
+                  <TableCell align="center">Email</TableCell>
+                  <TableCell align="center">City</TableCell>
+                  <TableCell align="center">Edit</TableCell>
+                  <TableCell align="center">Delete</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {users.sort(getComparator(order, "username")).map((user) => (
+                  <TableRow
+                    key={user.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {user.id}
+                    </TableCell>
+                    <TableCell align="center">{user.name}</TableCell>
+                    <TableCell align="center">{user.username}</TableCell>
+                    <TableCell align="center">{user.email}</TableCell>
+                    <TableCell align="center">{user.address.city}</TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        color="warning"
+                        name="edit"
+                        onClick={() => {
+                          navigate(`edit/${user.id}`);
+                        }}
+                      >
+                        edit
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        color="error"
+                        name="delete"
+                        onClick={() => dispatch(remove(user))}
+                      >
+                        delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Stack>
+      {showDelete && (
+        <DeletePopup
+          cancel={() => dispatch(cancel())}
+          removeUser={() => dispatch(deleteUser())}
+          isOpen={showDelete}
+          isLoading={status === "remove_loading"}
+          user={user}
+        />
       )}
-    </Stack>
+    </>
   );
 }

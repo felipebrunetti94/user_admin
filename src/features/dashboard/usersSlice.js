@@ -12,21 +12,16 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
 
 export const createUser = createAsyncThunk(
   "users/createUser",
-  async (_, { getState }) => {
-    const { users } = getState();
-    const newUSer = await usersApi.create(users.current);
+  async (userInfo) => {
+    const newUSer = await usersApi.create(userInfo);
     return newUSer;
   }
 );
 
-export const editUser = createAsyncThunk(
-  "users/editUser",
-  async (_, { getState }) => {
-    const { users } = getState();
-    const editedUser = await usersApi.edit(users.current);
-    return editedUser;
-  }
-);
+export const editUser = createAsyncThunk("users/editUser", async (user) => {
+  const editedUser = await usersApi.edit(user);
+  return editedUser;
+});
 
 export const deleteUser = createAsyncThunk(
   "users/deleteUser",

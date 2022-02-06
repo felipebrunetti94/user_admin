@@ -1,23 +1,31 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  cancel,
-  editUser,
-  updateField,
-} from "../features/dashboard/usersSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { editUser, selectUserById } from "../features/dashboard/usersSlice";
 import UserEditor from "./UserEditor";
 
 export default function EditUser() {
+  const { userId } = useParams();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.users.current);
+  const navigate = useNavigate();
+  const currentUser = useSelector((state) => selectUserById(state, userId));
   const errors = useSelector((state) => state.users.errors);
   const isFetching = useSelector((state) => state.status === "edit_loading");
 
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
+
   return (
     <UserEditor
-      updateField={(payload) => dispatch(updateField(payload))}
-      onSubmit={() => dispatch(editUser())}
-      user={user}
-      cancel={() => dispatch(cancel())}
+      onSubmit={(user) => {
+        dispatch(editUser(user));
+        navigate("/");
+      }}
+      editedUser={currentUser}
+      cancel={() => navigate("/")}
       isFetching={isFetching}
       errors={errors}
     />
