@@ -60,7 +60,7 @@ export default function DeletePopup({
             variant="contained"
             size="small"
             color="error"
-            name="delete"
+            name="confirm"
           >
             Delete
           </Button>

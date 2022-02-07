@@ -1,6 +1,6 @@
 import { makeUser } from "./makeUser";
 
-const BASE_URL =
+export const BASE_URL =
   "https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data";
 
 function errorHandler(response) {

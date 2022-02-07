@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
+import validate from "../../domain/user/validate";
 
 export default function UserEditor({
   onSubmit,
@@ -15,6 +16,7 @@ export default function UserEditor({
 }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(editedUser);
+  const [errors, setErrors] = useState({ empty: true });
   const handleChange = (key) => (event) => {
     setUser((u) => ({ ...u, [key]: event.target.value }));
   };
@@ -35,7 +37,12 @@ export default function UserEditor({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(user);
+    const err = validate(user);
+    if (err.empty) {
+      onSubmit(user);
+    } else {
+      setErrors(err);
+    }
   };
 
   const cancel = () => navigate("/");
@@ -47,7 +54,8 @@ export default function UserEditor({
       </Typography>
       <Stack spacing={2}>
         <TextField
-          required
+          error={!!errors.name}
+          helperText={errors.name}
           label="Name"
           type="text"
           id="name"
@@ -57,7 +65,8 @@ export default function UserEditor({
         />
 
         <TextField
-          required
+          error={!!errors.email}
+          helperText={errors.email}
           label="Email"
           type="email"
           id="email"
@@ -138,7 +147,7 @@ export default function UserEditor({
               <Stack spacing={2}>
                 <FormLabel component="legend">Company</FormLabel>
                 <TextField
-                  label="Name"
+                  label="Company Name"
                   type="text"
                   id="companyName"
                   name="companyName"

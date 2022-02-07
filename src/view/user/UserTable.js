@@ -72,7 +72,9 @@ export default function UserTable() {
           </Button>
         </Stack>
         {showEmptyMessage && <Alert severity="info">No user found!</Alert>}
-        {isLoading && <Skeleton variant="rectangular" />}
+        {isLoading && (
+          <Skeleton data-testid="table-loader" variant="rectangular" />
+        )}
         {showTable && (
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
